@@ -1,15 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    // disabled:false,
-
-}
+  contactInfo: [],
+};
 const ContactSlicer = createSlice({
-    name:'contact/redux',
-    initialState,
-    reducers: {
+  name: "contact/redux",
+  initialState,
 
-    }
-})
-export const {CHANGE} =ContactSlicer.actions
-export default ContactSlicer.reducer
+  reducers: {
+    SUBMITE: (state, action) => {
+        state.contactInfo = action.payload
+      const setLocal = (info) => {
+        localStorage.setItem("contact", JSON.stringify(info));
+      };
+      setLocal(action.payload);
+      console.log(state.contactInfo);
+    },
+  },
+});
+export const { SUBMITE } = ContactSlicer.actions;
+export default ContactSlicer.reducer;

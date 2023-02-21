@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { useInput } from '../useInput'
 import { BsMusicNoteBeamed } from 'react-icons/bs'
 import { ContactSchema } from '../validation'
+import { SUBMITE } from '../redux/ContactSlice'
 
 const MainContainer = styled.form`
 width: 20%;
@@ -37,11 +38,7 @@ export const Main = () => {
     const dispatch = useDispatch()
     const state = useSelector(state => state.contact)
     const [disabled, setDisabled] = useState(true)
-    const [valid, setValid] = useState(false)
-    const [error, setError] = useState([])
 
-
-    
     const validHandler = async() => {
         let dataValidation = {
             name,
@@ -56,11 +53,11 @@ export const Main = () => {
         }
         catch(err){
             setDisabled(true)
-            setError(err.message)
-            console.log(error);
+            // setError(err.message)
         }
     }
     
+    //custom hook
     const {values:name, ValueChangeHandler:changeNameHandler} = useInput(validHandler)
     const {values:lastName, ValueChangeHandler:changeLastNameHandler} = useInput(validHandler)
     const {values:phone, ValueChangeHandler:changephoneHandler} = useInput(validHandler)
@@ -69,7 +66,27 @@ export const Main = () => {
   
     const submitHandler = (e) => {
         e.preventDefault()
+        dispatch(SUBMITE({
+            payload: { 
+                nameAndLastName:name +' '+ lastName,
+                relation:selfRelative,
+                email:email}
+        }))
+        
+
+        //set local storage data
+        // const newObj={
+        //     nameAndLastName:name +' '+ lastName,
+        //     relation:selfRelative,
+        //     email:email
+        // }
+        // setLocal(newObj)
     } 
+
+    // const setLocal = (info) => {
+    //     localStorage.setItem('contact',JSON.stringify(info))
+    // }
+    
    
   return (
     <MainContainer onSubmit={submitHandler}>
@@ -84,7 +101,7 @@ export const Main = () => {
             <option value="همکار">همکار</option>
         </Select>
         <Input changeValue={changeemailHandler} placeholder={"ایمیل..."} namee={email}/>
-        <Input type={'submit'} title={"اضافه کردن"} style={{cursor:'pointer'}} disabled={disabled}/>
+        <Input type={'submit'} title={"اضافه کردن"} style={{cursor:'pointer'}} disabled={disabled} BtnStyle={{cursor:'pointer'}}/>
         
     </MainContainer>
   )
