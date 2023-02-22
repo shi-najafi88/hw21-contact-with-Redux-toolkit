@@ -11,9 +11,9 @@ outline: none;
 border: none;
 `
 
-export const Input = ({type,placeholder,title,namee,disabled,changeValue,BtnStyle}) => {
+export const Input = ({type,placeholder,title,namee,disabled,changeValue,BtnStyle,clicked}) => {
 
   return (
-    <InputElem onChange={changeValue} type={type} placeholder={placeholder} name={namee} disabled={disabled} value={title} style={BtnStyle} />
+    <InputElem onChange={changeValue} onClick={clicked} type={type} placeholder={placeholder} name={namee} disabled={disabled} value={title} style={BtnStyle} />
   )
 }

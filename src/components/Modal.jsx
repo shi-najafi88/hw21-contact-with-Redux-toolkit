@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { BsFillTrashFill } from 'react-icons/bs'
 import { BiEdit } from 'react-icons/bi'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { EDITICON } from '../redux/ContactSlice';
 
 const ModalContainer = styled.div`
     width:22%;
@@ -24,25 +25,26 @@ const Info = styled.p`
 
 export const Modal = () => {
 
+    const dispatch = useDispatch()
     const state = useSelector(state => state.contact)
     let info = state.contactInfo.payload
 
-    // let getLocal={}
-    // const getLocalStorage = () => {
-    //     getLocal = JSON.parse(localStorage.getItem('contact'))
-    //     console.log(getLocal);
-    // }
-    // getLocalStorage()
-    
+    const editHandler = () => {
+        dispatch(EDITICON()) 
+    }
+
+    const deletHandler = () => {
+        dispatch(DELET())
+    }
 
   return (
     <ModalContainer>
         <ContainerIcons>
-            <BsFillTrashFill style={{color:'white', fontSize:'1.5rem'}} />
-            <BiEdit style={{color:'white', fontSize:'1.5rem'}} />
+            <BsFillTrashFill onClick={deletHandler}  style={{color:'white', fontSize:'1.5rem', cursor:'pointer'}} />
+            <BiEdit onClick={editHandler} style={{color:'white', fontSize:'1.5rem', cursor:'pointer'}} />
         </ContainerIcons>
 
-        { (info!= null)? 
+        { (info!= null) && state.editMood? 
         <div>
             <Info>{info.nameAndLastName}</Info>
             <Info>{info.relation}</Info>
@@ -50,7 +52,6 @@ export const Modal = () => {
         </div>: null
         }
         
-
     </ModalContainer>
   )
 }

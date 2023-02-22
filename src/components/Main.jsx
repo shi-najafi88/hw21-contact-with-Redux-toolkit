@@ -7,6 +7,7 @@ import { useInput } from '../useInput'
 import { BsMusicNoteBeamed } from 'react-icons/bs'
 import { ContactSchema } from '../validation'
 import { SUBMITE } from '../redux/ContactSlice'
+import { ToastContainer, toast} from 'react-toastify'
 
 const MainContainer = styled.form`
 width: 20%;
@@ -23,7 +24,7 @@ const H3 = styled.h3`
     text-align: center;
     font-weight: lighter;
     margin: 0;
-`
+`;
 
 const Select = styled.select`
 padding: 0.3rem 0.5rem;
@@ -32,7 +33,7 @@ direction: rtl;
 font-size:.9rem;
 border: none;
 outline: none;
-`
+`;
 
 export const Main = () => {
     const dispatch = useDispatch()
@@ -71,24 +72,24 @@ export const Main = () => {
                 nameAndLastName:name +' '+ lastName,
                 relation:selfRelative,
                 email:email}
-        }))
-        
-
-        //set local storage data
-        // const newObj={
-        //     nameAndLastName:name +' '+ lastName,
-        //     relation:selfRelative,
-        //     email:email
-        // }
-        // setLocal(newObj)
+        })) 
+        if(!state.editMood){  
+            toast.success('Add is successfule')
+        }          
     } 
 
-    // const setLocal = (info) => {
-    //     localStorage.setItem('contact',JSON.stringify(info))
-    // }
-    
+    //edit btn
+    const editClick = () => {
+        if(state.editMood){
+            toast.success('Edit is successfule')
+        }    
+    }
+
    
   return (
+    <>
+    <ToastContainer/>
+    
     <MainContainer onSubmit={submitHandler}>
         <H3>وب اپلیکیشن مدیریت مخاطبین</H3>
         <Input changeValue={changeNameHandler} type={'text'} placeholder={"نام..."} namee={name}/>
@@ -101,8 +102,13 @@ export const Main = () => {
             <option value="همکار">همکار</option>
         </Select>
         <Input changeValue={changeemailHandler} placeholder={"ایمیل..."} namee={email}/>
-        <Input type={'submit'} title={"اضافه کردن"} style={{cursor:'pointer'}} disabled={disabled} BtnStyle={{cursor:'pointer'}}/>
+        {state.editMood?
+         <Input clicked={editClick} type={'submit'} title={"ویرایش"} disabled={disabled} BtnStyle={{cursor:'pointer', backgroundColor:'gray', color:'white'}}/>
+         : 
+         <Input type={'submit'} title={"اضافه کردن"} style={{cursor:'pointer'}} disabled={disabled} BtnStyle={{cursor:'pointer'}}/>
+        } 
         
     </MainContainer>
+    </>
   )
 }

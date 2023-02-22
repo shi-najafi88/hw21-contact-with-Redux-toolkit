@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   contactInfo: [],
+  editMood:false
 };
 const ContactSlicer = createSlice({
   name: "contact/redux",
@@ -16,7 +17,12 @@ const ContactSlicer = createSlice({
       setLocal(action.payload);
       console.log(state.contactInfo);
     },
+
+    EDITICON:(state,action) => {
+      state.editMood = true
+    }
+
   },
 });
-export const { SUBMITE } = ContactSlicer.actions;
+export const { SUBMITE , EDITICON } = ContactSlicer.actions;
 export default ContactSlicer.reducer;
