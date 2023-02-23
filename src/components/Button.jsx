@@ -3,13 +3,13 @@ import styled from 'styled-components'
 
 const ButtonElem = styled.button`
 width: 98%;
-padding: 0.4rem 0.7rem;
+padding: .5rem 2rem;
 border-radius: 5px;
 border: none;
 cursor: pointer;
 `
-export const Button = ({title}) => {
+export const Button = ({children, styleBtn, clickHandler}) => {
   return (
-    <ButtonElem>{title}</ButtonElem>
+    <ButtonElem onClick={clickHandler} style={{backgroundColor:styleBtn, color:'white'}}>{children}</ButtonElem>
   )
 }

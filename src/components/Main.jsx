@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Input } from './Input'
 import {useDispatch, useSelector} from 'react-redux'
@@ -39,6 +39,7 @@ export const Main = () => {
     const dispatch = useDispatch()
     const state = useSelector(state => state.contact)
     const [disabled, setDisabled] = useState(true)
+   
 
     const validHandler = async() => {
         let dataValidation = {
@@ -65,18 +66,41 @@ export const Main = () => {
     const {values:email, ValueChangeHandler:changeemailHandler} = useInput(validHandler)
     const {values:selfRelative, ValueChangeHandler:changeselfRelativeHandler} = useInput(validHandler)
   
+    
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(SUBMITE({
-            payload: { 
-                nameAndLastName:name +' '+ lastName,
+            payload: {
+                // id:Date.now(),
+                name:name,
+                lastName:lastName,
                 relation:selfRelative,
                 email:email}
         })) 
         if(!state.editMood){  
             toast.success('Add is successfule')
-        }          
+        }   
+        setLocal()
+       
     } 
+    // console.log(state);
+
+    // set localStorage
+    const setLocal = () => {
+
+        let newObj = {
+            id:Date.now(),
+            name:name,
+            lastName:lastName,
+            selfRelative:selfRelative,
+            email:email,  
+        }  
+
+        const oldInfo = JSON.parse(localStorage.getItem('contact') || '[]');
+        oldInfo.push(newObj)
+        localStorage.setItem('contact', JSON.stringify(oldInfo));
+        console.log(oldInfo);
+    }
 
     //edit btn
     const editClick = () => {
