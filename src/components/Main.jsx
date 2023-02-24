@@ -4,9 +4,8 @@ import styled from 'styled-components'
 import { Input } from './Input'
 import {useDispatch, useSelector} from 'react-redux'
 import { useInput } from '../useInput'
-import { BsMusicNoteBeamed } from 'react-icons/bs'
 import { ContactSchema } from '../validation'
-import { SUBMITE } from '../redux/ContactSlice'
+import { SUBMITE , EDIT_CONTACT } from '../redux/ContactSlice'
 import { ToastContainer, toast} from 'react-toastify'
 
 const MainContainer = styled.form`
@@ -39,8 +38,8 @@ export const Main = () => {
     const dispatch = useDispatch()
     const state = useSelector(state => state.contact)
     const [disabled, setDisabled] = useState(true)
-   
 
+    //validation func
     const validHandler = async() => {
         let dataValidation = {
             name,
@@ -65,25 +64,22 @@ export const Main = () => {
     const {values:phone, ValueChangeHandler:changephoneHandler} = useInput(validHandler)
     const {values:email, ValueChangeHandler:changeemailHandler} = useInput(validHandler)
     const {values:selfRelative, ValueChangeHandler:changeselfRelativeHandler} = useInput(validHandler)
-  
+
     
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(SUBMITE({
-            payload: {
-                // id:Date.now(),
-                name:name,
-                lastName:lastName,
-                relation:selfRelative,
-                email:email}
-        })) 
+        dispatch(SUBMITE(
+             { name:name,
+               lastName:lastName,
+               relation:selfRelative,
+               email:email}
+        )) 
         if(!state.editMood){  
             toast.success('Add is successfule')
         }   
-        setLocal()
-       
+        setLocal()  
+        // const {values:name=''} = useInput()
     } 
-    // console.log(state);
 
     // set localStorage
     const setLocal = () => {
@@ -92,18 +88,26 @@ export const Main = () => {
             id:Date.now(),
             name:name,
             lastName:lastName,
-            selfRelative:selfRelative,
-            email:email,  
+            email:email,
+            selfRelative:selfRelative,      
         }  
-
         const oldInfo = JSON.parse(localStorage.getItem('contact') || '[]');
         oldInfo.push(newObj)
         localStorage.setItem('contact', JSON.stringify(oldInfo));
-        console.log(oldInfo);
+
+
     }
 
     //edit btn
     const editClick = () => {
+        console.log('shhhh');
+
+        dispatch(EDIT_CONTACT(
+           {name:name,
+            lastName:lastName,
+            relation:selfRelative,
+            email:email}
+        ))
         if(state.editMood){
             toast.success('Edit is successfule')
         }    
@@ -127,7 +131,7 @@ export const Main = () => {
         </Select>
         <Input changeValue={changeemailHandler} placeholder={"ایمیل..."} namee={email}/>
         {state.editMood?
-         <Input clicked={editClick} type={'submit'} title={"ویرایش"} disabled={disabled} BtnStyle={{cursor:'pointer', backgroundColor:'gray', color:'white'}}/>
+         <Input clicked={editClick} type={'button'} title={"ویرایش"} disabled={disabled} BtnStyle={{cursor:'pointer', backgroundColor:'gray', color:'white'}}/>
          : 
          <Input type={'submit'} title={"اضافه کردن"} style={{cursor:'pointer'}} disabled={disabled} BtnStyle={{cursor:'pointer'}}/>
         } 

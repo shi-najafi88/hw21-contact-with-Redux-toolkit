@@ -28,7 +28,7 @@ function App() {
       <ContainerModal>
       {getLocal ? getLocal.map(item => (
          <Modal item={item} />
-      )) : null}
+      )) :''}
       </ContainerModal>
       
      

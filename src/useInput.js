@@ -7,5 +7,5 @@ export const useInput = (validator) => {
     setValue(event.target.value);
     validator()
   };
-  return { values, ValueChangeHandler };
+  return { values, ValueChangeHandler, setValue };
 };

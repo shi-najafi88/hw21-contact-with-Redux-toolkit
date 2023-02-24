@@ -25,9 +25,9 @@ const Info = styled.p`
 export const Modal = ({item}) => {
 
     const dispatch = useDispatch()
-   
-    const editHandler = () => {
-        dispatch(EDITICON()) 
+    
+    const editHandler = (id) => {
+        dispatch(EDITICON(id)) 
     }
 
     const deletHandler = (id) => {
@@ -39,14 +39,17 @@ export const Modal = ({item}) => {
     <ModalContainer>
         <ContainerIcons>
             <BsFillTrashFill onClick={()=>deletHandler(item.id)} style={{color:'white', fontSize:'1.5rem', cursor:'pointer'}} />
-            <BiEdit onClick={editHandler} style={{color:'white', fontSize:'1.5rem', cursor:'pointer'}} />
+            <BiEdit onClick={()=>editHandler(item.id)} style={{color:'white', fontSize:'1.5rem', cursor:'pointer'}} />
         </ContainerIcons>
    
-        <div>
+        {item?
+            <div>
             <Info>{item.name + item.lastName}</Info>
             <Info>{item.selfRelative}</Info>
-            <Info>{item.email}</Info>
-        </div>
+            <Info>{item.email}</Info> 
+         </div>:''
+        }
+        
     </ModalContainer>
   )
 }
